@@ -33,8 +33,38 @@ ramdisk_compression=auto
 # import patching functions/variables - see for reference
 . tools/ak3-core.sh;
 
+# Detect device and system
+if [ -e /system/etc/buildinfo/oem_build.prop ]; then
+  os="stock";
+  os_string="OxygenOS/HydrogenOS";
+else
+  os="custom";
+  os_string="a custom ROM";
+fi
+ui_print " " "You are on $os_string!";
+if [ $os == "custom" ]; then
+  if [ -f $home/Image.gz ]; then
+    mv $home/Image.gz $home/Image.gz-dtb;
+  fi;
+  if [ -f $home/dtb ]; then
+    cat $home/dtb >> $home/Image.gz-dtb;
+  fi;
+fi;
+
 ## AnyKernel install
 dump_boot;
+
+# Unified with custom ROMs
+if [ $os == "custom" ]; then
+  patch_cmdline "msm_drm.is_stock" "msm_drm.is_stock=0"
+else
+  patch_cmdline "msm_drm.is_stock" "msm_drm.is_stock=1"
+fi
+
+# Override DTB
+if [ $os == "stock" ]; then
+  mv $home/dtb $home/split_img/;
+fi
 
 # Optimize F2FS extension list (@arter97)
 if mountpoint -q /data; then
