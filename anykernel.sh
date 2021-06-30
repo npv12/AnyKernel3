@@ -57,8 +57,10 @@ dump_boot;
 # Unified with custom ROMs
 if [ $os == "custom" ]; then
   patch_cmdline "msm_drm.is_stock" "msm_drm.is_stock=0"
+  patch_cmdline "smb5_lib.pd_active" "smb5_lib.pd_active=1"
 else
   patch_cmdline "msm_drm.is_stock" "msm_drm.is_stock=1"
+  patch_cmdline "smb5_lib.pd_active" "smb5_lib.pd_active=0"
 fi
 
 # Override DTB
