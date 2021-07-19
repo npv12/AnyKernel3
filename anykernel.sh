@@ -41,7 +41,7 @@ else
   os="custom";
   os_string="a custom ROM";
 fi
-ui_print " " "You are on $os_string!";
+
 if [ $os == "custom" ]; then
   if [ -f $home/Image.gz ]; then
     mv $home/Image.gz $home/Image.gz-dtb;
@@ -53,15 +53,6 @@ fi;
 
 ## AnyKernel boot install
 dump_boot;
-
-# Unified with custom ROMs
-if [ $os == "custom" ]; then
-  patch_cmdline "msm_drm.is_stock" "msm_drm.is_stock=0"
-  patch_cmdline "smb5_lib.pd_active" "smb5_lib.pd_active=1"
-else
-  patch_cmdline "msm_drm.is_stock" "msm_drm.is_stock=1"
-  patch_cmdline "smb5_lib.pd_active" "smb5_lib.pd_active=0"
-fi
 
 # Override DTB
 if [ $os == "stock" ]; then
