@@ -21,7 +21,7 @@ device.name9=OnePlus7TPro
 device.name10=hotdog
 device.name11=OnePlus7TProNR
 device.name12=hotdogg
-supported.versions=10, 11, 12
+supported.versions=11, 12
 '; } # end properties
 
 # shell variables
@@ -33,13 +33,13 @@ ramdisk_compression=auto
 # import patching functions/variables - see for reference
 . tools/ak3-core.sh;
 
+android_version="$(file_getprop /system/build.prop "ro.build.version.release")";
+
 # Detect device and system
 if [ -e /system/etc/buildinfo/oem_build.prop ]; then
   os="stock";
-  os_string="OxygenOS/HydrogenOS";
 else
   os="custom";
-  os_string="a custom ROM";
 fi
 
 if [ $os == "custom" ]; then
@@ -57,6 +57,14 @@ dump_boot;
 # Override DTB
 if [ $os == "stock" ]; then
   mv $home/dtb $home/split_img/;
+fi
+
+if [ $os == "custom" ]; then
+  if [ $android_version == "12" ]; then
+    patch_cmdline "msm_drm.is_a12" "msm_drm.is_a12=1"
+  else
+    patch_cmdline "msm_drm.is_a12" "msm_drm.is_a12=0"
+  fi
 fi
 
 # Optimize F2FS extension list (@arter97)
