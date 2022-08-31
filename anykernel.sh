@@ -4,7 +4,7 @@
 ## AnyKernel setup
 # begin properties
 properties() { '
-kernel.string=Dora Kernel for OP7 series
+kernel.string=Strix Kernel for OP7 series
 do.devicecheck=1
 do.modules=0
 do.cleanup=1
@@ -21,7 +21,7 @@ device.name9=OnePlus7TPro
 device.name10=hotdog
 device.name11=OnePlus7TProNR
 device.name12=hotdogg
-supported.versions=11, 12
+supported.versions=11, 12, 13
 '; } # end properties
 
 # shell variables
